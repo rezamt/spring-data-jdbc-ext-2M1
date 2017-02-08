@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.springframework.data:spring-data-oracle:2.0.0.M1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-oracle/2.0.0.M1/5caac0c2a3fbbd4aad0bde284693644c5edc68fa/spring-data-oracle-2.0.0.M1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-oracle/2.0.0.M1/113dcdb6287f816cef426228a40f11d5c2710465/spring-data-oracle-2.0.0.M1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

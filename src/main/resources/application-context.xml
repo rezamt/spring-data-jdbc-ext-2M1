@@ -1,0 +1,66 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:orcl="http://www.springframework.org/schema/data/orcl"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-3.0.xsd
+       http://www.springframework.org/schema/data/orcl
+       http://www.springframework.org/schema/data/orcl/spring-data-orcl-1.0.xsd">
+
+    <context:property-placeholder location="application.properties, orcl.properties"/>
+
+    <!--
+    Ref: http://docs.spring.io/spring-data/jdbc/docs/2.0.0.M1/reference/html/orcl.datasource.html#orcl.datasource.2
+    <orcl:pooling-datasource id="dataSource"
+                             connection-properties-prefix="conn"
+                             connection-cache-properties-prefix="cache"
+                             properties-location="classpath:orcl.properties"/>
+
+    -->
+
+
+    <!--
+
+        We are going to need a DataSource that is capable of participating in a "Fast Connection Failover" scenario. The only one we have available is the oracle.jdbc.pool.OracleDataSource implementation that we will configure using the "orcl" namespace. This DataSource configured with some additional properties used for RAC.
+
+        The url used in this example is a two node RAC configuration using the thin driver. It is probably too long to fit on the screen or on the page so if you would like to see the entire url it's listed in the callout notes.
+
+
+        1 The fast connection failover is enabled here.
+        2 The ONS (Oracle Notification Service) configuration is defined here since we are using the thin driver for this example.
+
+        Ref: http://docs.spring.io/spring-data/jdbc/docs/2.0.0.M1/reference/html/orcl.failover.html
+    -->
+
+    <orcl:pooling-datasource id="racDataSource"
+                             url="jdbc:oracle:thin:@(description=(address_list=
+            (address=(host=rac1)(protocol=tcp)(port=1521))
+            (address=(host=rac2)(protocol=tcp)(port=1521)))
+            (connect_data=(service_name=racdb1)))"
+                             connection-properties-prefix="conn"
+                             connection-cache-properties-prefix="cache"
+                             properties-location="classpath:orcl.properties"
+                             fast-connection-failover-enabled="true"
+                             ONS-configuration="rac1:6200,rac2:6200"/>
+
+
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="racDataSource"/>
+    </bean>
+
+
+    <!-- Beans Configuration -->
+    <bean id="petStore" class="com.mycompany.PetStoreService">
+        <property name="name" value="${service.name}"/>
+    </bean>
+
+    <!--
+    <bean id="corporateEventDao" class="com.mycompany.dao.JdbcCorporateEventDao">
+        <property name="dataSource" ref="racDataSource"/>
+    </bean>
+-->
+
+</beans>
