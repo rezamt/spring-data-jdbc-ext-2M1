@@ -43,3 +43,8 @@ $ mvn install:install-file -Dfile=/{YOUR-ROOT}/spring-data-jdbc-ext-2M1/drivers/
 
 
 ```
+
+### References
+
+[Oracle 12g JDBC Driver](http://www.oracle.com/technetwork/apps-tech/jdbc-112010-090769.html)
+[Oracle 11g JDBC Driver]()
